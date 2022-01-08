@@ -1,0 +1,16 @@
+name: trigger
+
+on:
+  schedule:
+    - cron:  '0 0 * * *'
+
+  workflow_dispatch:
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - run: ./commit_check.sh
+

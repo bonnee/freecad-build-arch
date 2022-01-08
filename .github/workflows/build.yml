@@ -1,6 +1,11 @@
-name: 'Build FreeCAD for Arch Linux'
+name: 'Build FreeCAD'
 
-on: push
+on:
+  workflow_run:
+    workflows: ["trigger"]
+    types: [completed]
+
+  workflow_dispatch:
 
 jobs:
   build:
