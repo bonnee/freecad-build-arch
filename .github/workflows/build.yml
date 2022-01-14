@@ -2,8 +2,9 @@ name: 'Build FreeCAD'
 
 on:
   workflow_run:
-    workflows: ["trigger"]
-    types: [completed]
+    workflows: [trigger]
+    types:
+      - completed
 
   workflow_dispatch:
 
@@ -11,6 +12,7 @@ jobs:
   build:
     name: Build FreeCAD for Arch Linux
     runs-on: ubuntu-latest
+    if: ${{ github.event.workflow_run.conclusion == 'success' }}
     steps:
       - name: Check out
         uses: actions/checkout@v2
