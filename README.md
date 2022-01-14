@@ -1,3 +1,4 @@
+[![Build FreeCAD](https://github.com/Bonnee/freecad-build-arch/actions/workflows/build.yml/badge.svg)](https://github.com/Bonnee/freecad-build-arch/actions/workflows/build.yml)
 # freecad-build-arch
 Builds FreeCAD [LinkDaily](https://github.com/realthunder/FreeCAD/tree/LinkDaily) branch with [makepkg](https://wiki.archlinux.org/title/Makepkg).
 
