@@ -26,10 +26,52 @@ jobs:
       - name: Burn Baby Burn
         continue-on-error: true
         run: docker run -e EXPORT_PKG=1 -v $PWD/freecad-linkdaily-git:/pkg freecad-makepkg
+      - name: version
+        id: version
+        run: |
+          echo "::set-output name=pkgbase::$(awk { if ($1 ~ /pkgbase/) { '{print $3}}' freecad-linkdaily-git/.SRCINFO)"
+          echo "::set-output name=pkgver::$(awk { if ($1 ~ /pkgver/) { '{print $3}}' freecad-linkdaily-git/.SRCINFO)"
+          echo "::set-output name=pkgrel::$(awk { if ($1 ~ /pkgrel/) { '{print $3}}' freecad-linkdaily-git/.SRCINFO)"
+          echo "::set-output name=arch::$(awk { if ($1 ~ /arch/) { '{print $3}}' freecad-linkdaily-git/.SRCINFO)"
+          echo "::set-output name=filename::freecad-linkdaily-git-$${ steps.version.outputs.pkgver }-$${ steps.version.outputs.pkgrel }-$${{ steps.version.outputs.arch }}.pkg.zst"
+          
+          #- name: Upload pkg as artifact
+          #  uses: actions/upload-artifact@v2
+          #  with:
+          #    name: freecad-linkdaily
+          #    path: ./freecad-linkdaily-git/*.pkg*
 
-      - name: Upload pkg as artifact
-        uses: actions/upload-artifact@v2
+      - name: release
+        uses: actions/create-release@v1
+        id: create_release
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
         with:
-          name: freecad-linkdaily
-          path: ./freecad-linkdaily-git/*.pkg*
+          draft: false
+          prerelease: falsze
+          release_name: ${{ steps.version.outputs.pkgver }}
+          tag_name: ${{ github.ref }}
+          body: |
+            # FreeCAD LinkDaily
+            version ${{ steps.version.outputs.pkgver }}
+
+      - name: Upload package
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: ./freecad-linkdaily-git/$${ steps.version.outputs.filename }
+          asset_name: $${ steps.version.outputs.filename }
+          asset_content_type: application/zstd
+
+      - name: Upload SRCINFO
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: ./freecad-linkdaily-git/.SRCINFO
+          asset_name: .SRCINFO
+          asset_content_type: application/zstd
 
