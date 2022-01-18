@@ -33,7 +33,7 @@ jobs:
           echo "::set-output name=pkgver::$(awk '{ if ($1 ~ /pkgver/) {print $3} }' freecad-linkdaily-git/.SRCINFO)"
           echo "::set-output name=pkgrel::$(awk '{ if ($1 ~ /pkgrel/) {print $3} }' freecad-linkdaily-git/.SRCINFO)"
           echo "::set-output name=arch::$(awk '{ if ($1 ~ /arch/) {print $3} }' freecad-linkdaily-git/.SRCINFO)"
-          echo "::set-output name=filename::freecad-linkdaily-git-$${ steps.version.outputs.pkgver }-$${ steps.version.outputs.pkgrel }-$${{ steps.version.outputs.arch }}.pkg.zst"
+          echo "::set-output name=filename::freecad-linkdaily-git-${ steps.version.outputs.pkgver }-${ steps.version.outputs.pkgrel }-${{ steps.version.outputs.arch }}.pkg.zst"
           
           #- name: Upload pkg as artifact
           #  uses: actions/upload-artifact@v2
@@ -61,8 +61,8 @@ jobs:
           GITHUB_TOKEN: ${{ github.token }}
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: ./freecad-linkdaily-git/$${ steps.version.outputs.filename }
-          asset_name: $${ steps.version.outputs.filename }
+          asset_path: ./freecad-linkdaily-git/${ steps.version.outputs.filename }
+          asset_name: ${ steps.version.outputs.filename }
           asset_content_type: application/zstd
 
       - name: Upload SRCINFO
