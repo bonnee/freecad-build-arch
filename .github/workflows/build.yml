@@ -16,6 +16,8 @@ jobs:
     steps:
       - name: Check out
         uses: actions/checkout@v2
+        with:
+          submodules: recursive
       
       - name: Build Makepkg Docker image
         continue-on-error: true
@@ -23,11 +25,11 @@ jobs:
           
       - name: Burn Baby Burn
         continue-on-error: true
-        run: docker run -e EXPORT_PKG=1 -v $PWD/freecad-linkstage3-git:/pkg freecad-makepkg
+        run: docker run -e EXPORT_PKG=1 -v $PWD/freecad-linkdaily-git:/pkg freecad-makepkg
 
       - name: Upload pkg as artifact
         uses: actions/upload-artifact@v2
         with:
           name: freecad-linkdaily
-          path: ./freecad-linkstage3-git/*.pkg*
-            
+          path: ./freecad-linkdaily-git/*.pkg*
+
