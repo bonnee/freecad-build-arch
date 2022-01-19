@@ -19,13 +19,14 @@ jobs:
         with:
           submodules: recursive
       
-      #- name: Build makepkg Docker image
-      #  continue-on-error: true
-      #  run: docker build -t freecad-makepkg .
-          
-      #- name: Burn Baby Burn
-      #  continue-on-error: true
-      #  run: docker run -e EXPORT_PKG=1 -v $PWD/freecad-linkdaily-git:/pkg freecad-makepkg
+      - name: Build makepkg Docker image
+        continue-on-error: true
+        run: docker build -t freecad-makepkg .
+         
+      - name: Burn Baby Burn
+        continue-on-error: true
+        run: docker run -e EXPORT_PKG=1 -v $PWD/freecad-linkdaily-git:/pkg freecad-makepkg
+
       - name: Retrieve version info
         id: version
         run: |
@@ -38,7 +39,6 @@ jobs:
           echo "::set-output name=pkgrel::$pkgrel"
           echo "::set-output name=arch::$arch"
 
-          ls -al ./freecad-linkdaily-git
           echo "::set-output name=filename::$(basename $(ls ./freecad-linkdaily-git/*.pkg.tar* | tail -n1))"
           #echo "::set-output name=filename::freecad-linkdaily-git-$pkgver-$pkgrel-$arch.pkg.tar"
           
