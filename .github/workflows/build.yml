@@ -19,13 +19,13 @@ jobs:
         with:
           submodules: recursive
       
-      - name: Build makepkg Docker image
-        continue-on-error: true
-        run: docker build -t freecad-makepkg .
+      #- name: Build makepkg Docker image
+      #  continue-on-error: true
+      #  run: docker build -t freecad-makepkg .
           
-          #- name: Burn Baby Burn
-          #  continue-on-error: true
-          #  run: docker run -e EXPORT_PKG=1 -v $PWD/freecad-linkdaily-git:/pkg freecad-makepkg
+      #- name: Burn Baby Burn
+      #  continue-on-error: true
+      #  run: docker run -e EXPORT_PKG=1 -v $PWD/freecad-linkdaily-git:/pkg freecad-makepkg
       - name: Retrieve version info
         id: version
         run: |
@@ -79,6 +79,6 @@ jobs:
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
           asset_path: ./freecad-linkdaily-git/.SRCINFO
-          asset_name: .SRCINFO
+          asset_name: ".SRCINFO"
           asset_content_type: text/plain
 
