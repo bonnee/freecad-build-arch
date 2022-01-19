@@ -23,9 +23,9 @@ jobs:
         continue-on-error: true
         run: docker build -t freecad-makepkg .
           
-      - name: Burn Baby Burn
-        continue-on-error: true
-        run: docker run -e EXPORT_PKG=1 -v $PWD/freecad-linkdaily-git:/pkg freecad-makepkg
+          #- name: Burn Baby Burn
+          #  continue-on-error: true
+          #  run: docker run -e EXPORT_PKG=1 -v $PWD/freecad-linkdaily-git:/pkg freecad-makepkg
       - name: Retrieve version info
         id: version
         run: |
