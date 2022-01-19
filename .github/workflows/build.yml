@@ -38,13 +38,15 @@ jobs:
           echo "::set-output name=pkgrel::$pkgrel"
           echo "::set-output name=arch::$arch"
 
-          echo "::set-output name=filename::freecad-linkdaily-git-$pkgver-$pkgrel-$arch.pkg.tar"
+          ls -al ./freecad-linkdaily-git
+          echo "::set-output name=filename::$(ls ./freecad-linkdaily-git/*.pkg.tar* | tail -n1)"
+          #echo "::set-output name=filename::freecad-linkdaily-git-$pkgver-$pkgrel-$arch.pkg.tar"
           
           #- name: Upload pkg as artifact
           #  uses: actions/upload-artifact@v2
           #  with:
           #    name: freecad-linkdaily
-          #    path: ./freecad-linkdaily-git/*.pkg*
+          #    path: ./freecad-linkdaily-git/*.pkg.tar*
 
       - name: Create release
         uses: actions/create-release@v1
