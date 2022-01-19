@@ -19,14 +19,14 @@ jobs:
         with:
           submodules: recursive
       
-      - name: Build Makepkg Docker image
+      - name: Build makepkg Docker image
         continue-on-error: true
         run: docker build -t freecad-makepkg .
           
       - name: Burn Baby Burn
         continue-on-error: true
         run: docker run -e EXPORT_PKG=1 -v $PWD/freecad-linkdaily-git:/pkg freecad-makepkg
-      - name: version
+      - name: Retrieve version info
         id: version
         run: |
           pkgbase="$(awk '{ if ($1 ~ /pkgbase/) {print $3} }' freecad-linkdaily-git/.SRCINFO)"
@@ -46,7 +46,7 @@ jobs:
           #    name: freecad-linkdaily
           #    path: ./freecad-linkdaily-git/*.pkg*
 
-      - name: release
+      - name: Create release
         uses: actions/create-release@v1
         id: create_release
         env:
@@ -60,7 +60,7 @@ jobs:
             # FreeCAD LinkDaily
             version ${{ steps.version.outputs.pkgver }}
 
-      - name: Upload package
+      - name: Upload package to release
         uses: actions/upload-release-asset@v1
         env:
           GITHUB_TOKEN: ${{ github.token }}
@@ -70,7 +70,7 @@ jobs:
           asset_name: ${{ steps.version.outputs.filename }}
           asset_content_type: application/zstd
 
-      - name: Upload SRCINFO
+      - name: Upload SRCINFO to release
         uses: actions/upload-release-asset@v1
         env:
           GITHUB_TOKEN: ${{ github.token }}

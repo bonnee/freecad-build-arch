@@ -8,6 +8,7 @@ on:
 
 jobs:
   check:
+    name: Check commits in the past 24h
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
