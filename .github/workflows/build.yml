@@ -38,7 +38,7 @@ jobs:
           echo "::set-output name=pkgrel::$pkgrel"
           echo "::set-output name=arch::$arch"
 
-          echo "::set-output name=filename::freecad-linkdaily-git-$pkgver-$pkgrel-$arch.pkg.zst"
+          echo "::set-output name=filename::freecad-linkdaily-git-$pkgver-$pkgrel-$arch.pkg.tar"
           
           #- name: Upload pkg as artifact
           #  uses: actions/upload-artifact@v2
@@ -68,7 +68,7 @@ jobs:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
           asset_path: ./freecad-linkdaily-git/${{ steps.version.outputs.filename }}
           asset_name: ${{ steps.version.outputs.filename }}
-          asset_content_type: application/zstd
+          asset_content_type: application/x-tar
 
       - name: Upload SRCINFO to release
         uses: actions/upload-release-asset@v1
@@ -78,5 +78,5 @@ jobs:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
           asset_path: ./freecad-linkdaily-git/.SRCINFO
           asset_name: .SRCINFO
-          asset_content_type: application/zstd
+          asset_content_type: text/plain
 
