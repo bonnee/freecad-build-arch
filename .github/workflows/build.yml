@@ -39,7 +39,7 @@ jobs:
           echo "::set-output name=arch::$arch"
 
           ls -al ./freecad-linkdaily-git
-          echo "::set-output name=filename::$(ls ./freecad-linkdaily-git/*.pkg.tar* | tail -n1)"
+          echo "::set-output name=filename::$(basename $(ls ./freecad-linkdaily-git/*.pkg.tar* | tail -n1))"
           #echo "::set-output name=filename::freecad-linkdaily-git-$pkgver-$pkgrel-$arch.pkg.tar"
           
           #- name: Upload pkg as artifact
