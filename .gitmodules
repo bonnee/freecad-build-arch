@@ -1,3 +1,3 @@
-[submodule "freecad-linkdaily-git"]
-	path = freecad-linkdaily-git
-	url = https://aur.archlinux.org/freecad-linkdaily-git.git
+[submodule "freecad-linkstage3-git"]
+	path = freecad-linkstage3-git
+	url = https://aur.archlinux.org/freecad-linkstage3-git.git
