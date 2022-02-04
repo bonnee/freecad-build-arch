@@ -55,11 +55,11 @@ jobs:
           GITHUB_TOKEN: ${{ github.token }}
         with:
           draft: false
-          prerelease: falsze
+          prerelease: false
           release_name: ${{ steps.version.outputs.pkgver }}
-          tag_name: ${{ github.ref }}
+          tag_name: ${{ steps.version.outputs.pkgver }}
           body: |
-            # FreeCAD LinkDaily
+            # FreeCAD LinkStage3
             version ${{ steps.version.outputs.pkgver }}
 
       - name: Upload package to release
