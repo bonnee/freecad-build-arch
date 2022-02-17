@@ -12,7 +12,7 @@ jobs:
   build:
     name: Build FreeCAD
     runs-on: ubuntu-latest
-    #if: ${{ github.event.workflow_run.conclusion == 'success' }}
+    if: ${{ github.event.workflow_run.conclusion == 'success' }}
     steps:
       - name: Check out
         uses: actions/checkout@v2
@@ -23,7 +23,7 @@ jobs:
           repository: 'realthunder/FreeCAD'
           path: 'src'
 
-      - name:
+      #- name:
       
           #- name: Build makepkg Docker image
           #  continue-on-error: true
