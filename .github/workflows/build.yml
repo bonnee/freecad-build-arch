@@ -101,7 +101,7 @@ jobs:
         run: utils/gen_pkgbuild.awk utils/PKGBUILD.template > PKGBUILD
 
       - name: Publish freecad-linkstage3-bin to the AUR
-        uses: KSXGitHub/github-actions-deploy-aur@2.2.5
+        uses: KSXGitHub/github-actions-deploy-aur@v2.2.5
         with:
           pkgname: freecad-linkstage3-bin
           pkgbuild: ./PKGBUILD
