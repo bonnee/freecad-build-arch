@@ -49,7 +49,7 @@ jobs:
           #echo "::set-output name=filename::$(basename $(ls ./freecad-linkstage3-git/*.pkg.tar* | tail -n1))"
           #echo "::set-output name=filename::freecad-linkstage3-git-$pkgver-$pkgrel-$arch.pkg.tar"
       - name: Create archive
-        run:
+        run: |
           cd install
           tar -czf "..freecad-archive.tar.gz" *
           cd ..
