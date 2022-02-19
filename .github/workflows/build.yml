@@ -33,6 +33,9 @@ jobs:
         continue-on-error: true
         run: docker run -v $PWD/src:/mnt/source -v $PWD/install:/mnt/install registry.gitlab.com/bonnee/freecad-build-env:latest
 
+      - name: Fix perms
+        run: chown "$(id --user):$(id --group)" "install/freecad-archive.tar.gz"
+
       - name: Retrieve version info
         id: version
         run: |
