@@ -23,7 +23,7 @@ jobs:
           repository: 'realthunder/FreeCAD'
           path: 'src'
 
-      - name:
+      #- name:
       
           #- name: Build makepkg Docker image
           #  continue-on-error: true
@@ -32,6 +32,15 @@ jobs:
       - name: Burn Baby Burn
         continue-on-error: true
         run: docker run -v $PWD/src:/mnt/source -v $PWD/install:/mnt/install registry.gitlab.com/bonnee/freecad-build-env:latest
+        
+      - name: Fix perms
+        run: chown -R "$(id --user)":"$(id --group)" "install"
+        
+      - name: Create archive
+        run: |
+          cd install
+          tar -czf "..freecad-archive.tar.gz" *
+          cd ..
 
       - name: Retrieve version info
         id: version
@@ -48,11 +57,7 @@ jobs:
 
           #echo "::set-output name=filename::$(basename $(ls ./freecad-linkstage3-git/*.pkg.tar* | tail -n1))"
           #echo "::set-output name=filename::freecad-linkstage3-git-$pkgver-$pkgrel-$arch.pkg.tar"
-      - name: Create archive
-        run:
-          cd install
-          tar -czf "..freecad-archive.tar.gz" *
-          cd ..
+
           
           #- name: Upload archive as artifact
           #  uses: actions/upload-artifact@v2
@@ -101,7 +106,7 @@ jobs:
         run: utils/gen_pkgbuild.awk utils/PKGBUILD.template > PKGBUILD
 
       - name: Publish freecad-linkstage3-bin to the AUR
-        uses: KSXGitHub/github-actions-deploy-aur
+        uses: KSXGitHub/github-actions-deploy-aur@v2.2.5
         with:
           pkgname: freecad-linkstage3-bin
           pkgbuild: ./PKGBUILD
