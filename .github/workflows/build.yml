@@ -34,7 +34,7 @@ jobs:
         run: docker run -v $PWD/src:/mnt/source -v $PWD/install:/mnt/install registry.gitlab.com/bonnee/freecad-build-env:latest
         
       - name: Fix perms
-        run: chown -R "$(id --user)":"$(id --group)" "install"
+        run: sudo chown -R "$(id --user)":"$(id --group)" "install"
         
       - name: Create archive
         run: |
