@@ -34,7 +34,7 @@ jobs:
       - name: Create archive
         run: |
           cd install
-          tar -czf "..freecad-archive.tar.gz" *
+          tar -czf "../freecad-archive.tar.gz" *
           cd ..
 
       - name: Retrieve version info
