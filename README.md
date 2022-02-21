@@ -1,10 +1,9 @@
 [![Build FreeCAD](https://github.com/Bonnee/freecad-build-arch/actions/workflows/build.yml/badge.svg)](https://github.com/Bonnee/freecad-build-arch/actions/workflows/build.yml)
 # freecad-build-arch
-Builds FreeCAD [LinkDaily](https://github.com/realthunder/FreeCAD/tree/LinkDaily) branch with [makepkg](https://wiki.archlinux.org/title/Makepkg).
+Builds FreeCAD [LinkDaily](https://github.com/realthunder/FreeCAD/tree/LinkDaily) branch in an Arch Linux container and publishes the built binaries on the AUR.
 
 # Where
-Built packages reside as artifacts of a build job. Head over to the [Actions](https://github.com/Bonnee/freecad-build-arch/actions) page.
+The built archive resides as a release asset. Head over to the [Releases](https://github.com/Bonnee/freecad-build-arch/releases) page. The [AUR package](https://aur.archlinux.org/packages/freecad-linkstage3-bin) is published automatically after each successful build
 
 # Why
-Because GitHub gives me 50 hours of Actions for free and I don't want to waste them.
-
+Why waste free computing resources?
