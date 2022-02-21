@@ -67,7 +67,7 @@ jobs:
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
           asset_path: "./freecad-archive.tar.gz"
-          asset_name: "freecad-archive"
+          asset_name: "freecad-archive.tar.gz"
           asset_content_type: application/x-tar
 
             #- name: Upload SRCINFO to release
@@ -83,7 +83,7 @@ jobs:
       - name: Generate PKGBUILD
         env:
           PKGVER: ${{ steps.version.outputs.pkgver }}
-          RELEASE_TAG: ${{ needs.create_release.outputs.release_tag }}
+          RELEASE_TAG: ${{ steps.version.outputs.pkgver }} #${{ needs.create_release.outputs.release_tag }}
         run: utils/gen_pkgbuild.awk utils/PKGBUILD.template > PKGBUILD
 
       - name: Publish freecad-linkstage3-bin to the AUR
