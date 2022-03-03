@@ -22,13 +22,20 @@ jobs:
         with:
           repository: 'realthunder/FreeCAD'
           path: 'src'
+          fetch-depth: 0
 
       - name: Burn Baby Burn
         continue-on-error: true
         run: docker run -v $PWD/src:/mnt/source -v $PWD/install:/mnt/install registry.gitlab.com/bonnee/freecad-build-env:latest
-
+        
       - name: Fix perms
-        run: chown "$(id --user):$(id --group)" "install/freecad-archive.tar.gz"
+        run: sudo chown -R "$(id --user)":"$(id --group)" "install"
+        
+      - name: Create archive
+        run: |
+          cd install
+          tar -czf "../freecad-archive.tar.gz" *
+          cd ..
 
       - name: Retrieve version info
         id: version
@@ -63,7 +70,7 @@ jobs:
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
           asset_path: "./freecad-archive.tar.gz"
-          asset_name: "freecad-archive"
+          asset_name: "freecad-archive.tar.gz"
           asset_content_type: application/x-tar
 
       - name: Generate PKGBUILD
