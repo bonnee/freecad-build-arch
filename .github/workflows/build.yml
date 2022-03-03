@@ -23,12 +23,6 @@ jobs:
           repository: 'realthunder/FreeCAD'
           path: 'src'
 
-      #- name:
-      
-          #- name: Build makepkg Docker image
-          #  continue-on-error: true
-          #  run: docker build -t freecad-makepkg .
-         
       - name: Burn Baby Burn
         continue-on-error: true
         run: docker run -v $PWD/src:/mnt/source -v $PWD/install:/mnt/install registry.gitlab.com/bonnee/freecad-build-env:latest
@@ -39,30 +33,15 @@ jobs:
       - name: Retrieve version info
         id: version
         run: |
-          #pkgbase="$(awk '{ if ($1 ~ /pkgbase/) {print $3} }' freecad-linkstage3-git/.SRCINFO)"
-          #pkgver="$(awk '{ if ($1 ~ /pkgver/) {print $3} }' freecad-linkstage3-git/.SRCINFO)"
           pkgver="$(git -C src describe --long --tags | sed 's/\([^-]*-g\)/r\1/;s/-/./g;s/_//')"
-          #pkgrel="$(awk '{ if ($1 ~ /pkgrel/) {print $3} }' freecad-linkstage3-git/.SRCINFO)"
-          #arch="$(awk '{ if ($1 ~ /arch/) {print $3} }' freecad-linkstage3-git/.SRCINFO)"
-          #echo "::set-output name=pkgbase::$pkgbase"
           echo "::set-output name=pkgver::$pkgver"
-          #echo "::set-output name=pkgrel::$pkgrel"
-          #echo "::set-output name=arch::$arch"
 
-          #echo "::set-output name=filename::$(basename $(ls ./freecad-linkstage3-git/*.pkg.tar* | tail -n1))"
-          #echo "::set-output name=filename::freecad-linkstage3-git-$pkgver-$pkgrel-$arch.pkg.tar"
       - name: Create archive
         run: |
           cd install
           tar -czf "..freecad-archive.tar.gz" *
           cd ..
           
-          #- name: Upload archive as artifact
-          #  uses: actions/upload-artifact@v2
-          #  with:
-          #    name: ${{ steps.version.outputs.filename }}
-          #    path: ./freecad-linkstage3-git/${{ steps.version.outputs.filename }}
-
       - name: Create release
         uses: actions/create-release@v1
         id: create_release
@@ -87,20 +66,9 @@ jobs:
           asset_name: "freecad-archive"
           asset_content_type: application/x-tar
 
-            #- name: Upload SRCINFO to release
-            #  uses: actions/upload-release-asset@v1
-            #  env:
-            #    GITHUB_TOKEN: ${{ github.token }}
-            #  with:
-            #    upload_url: ${{ steps.create_release.outputs.upload_url }}
-            #    asset_path: ./freecad-linkstage3-git/.SRCINFO
-            #    asset_name: SRCINFO
-            #    asset_content_type: text/plain
-
       - name: Generate PKGBUILD
         env:
           PKGVER: ${{ steps.version.outputs.pkgver }}
-          RELEASE_TAG: ${{ needs.create_release.outputs.release_tag }}
         run: utils/gen_pkgbuild.awk utils/PKGBUILD.template > PKGBUILD
 
       - name: Publish freecad-linkstage3-bin to the AUR

@@ -19,6 +19,8 @@ depends=(
 
 ## END generated variables
 
+source=("https://github.com/Bonnee/freecad-build-arch/releases/download/${pkgver}/freecad-archive.tar.gz")
+
 package() {
 	# Symlink to /usr/bin
 	cd "$pkgdir"
