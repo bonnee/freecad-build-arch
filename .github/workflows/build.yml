@@ -76,7 +76,7 @@ jobs:
       - name: Generate PKGBUILD
         env:
           PKGVER: ${{ steps.version.outputs.pkgver }}
-          FILENAME: ${{ steps.version.outputs.pkgver }}
+          FILENAME: "freecad-archive.tar.gz"
         run: utils/gen_pkgbuild.awk utils/PKGBUILD.template > PKGBUILD
 
       - name: Publish freecad-linkstage3-bin to the AUR
