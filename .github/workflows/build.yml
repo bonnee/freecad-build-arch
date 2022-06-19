@@ -52,7 +52,7 @@ jobs:
           echo "::set-output name=pkgver::$pkgver"
           echo "::set-output name=pkgrel::$pkgrel"
           echo "::set-output name=arch::$arch"
-          echo "::set-output name=filename::$(basename $(ls freecad/freecad-linkstage3-git/*.pkg.tar* | tail -n1))"
+          echo "::set-output name=filename::$(basename $(ls freecad/*.pkg.tar* | tail -n1))"
           
         #id: version
         #run: |
