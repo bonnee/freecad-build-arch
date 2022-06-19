@@ -17,17 +17,17 @@ jobs:
       - name: Check out
         uses: actions/checkout@v2
 
-      - name: Check out FreeCAD
-        run: git clone --depth 1 https://aur.archlinux.org/freecad-linkstage3-git.git src
-        #uses: actions/checkout@v2
-        #with:
-        #  repository: 'realthunder/FreeCAD'
-        #  path: 'src'
-        #  fetch-depth: 0
+      #- name: Check out FreeCAD
+      #  run: git clone --depth 1 https://aur.archlinux.org/freecad-linkstage3-git.git src
+      #  #uses: actions/checkout@v2
+      #  #with:
+      #  #  repository: 'realthunder/FreeCAD'
+      #  #  path: 'src'
+      #  #  fetch-depth: 0
 
       - name: Burn Baby Burn
         continue-on-error: true
-        run: docker run -e EXPORT_PKG=1 -e EXPORT_SRC=1 -e SYNC_DATABASE=1 -v $PWD/src:/pkg whynothugo/makepkg
+        run: docker run -e EXPORT_PKG=1 -e EXPORT_SRC=1 -e SYNC_DATABASE=1 -v $PWD/freecad:/pkg whynothugo/makepkg
 
       #  continue-on-error: true
       #  run: docker run -v $PWD/src:/mnt/source -v $PWD/install:/mnt/install registry.gitlab.com/bonnee/freecad-build-env:latest
@@ -44,15 +44,15 @@ jobs:
       - name: Retrieve version info
         id: version
         run: |
-          pkgbase="$(awk '{ if ($1 ~ /pkgbase/) {print $3} }' src/.SRCINFO)"
-          pkgver="$(awk '{ if ($1 ~ /pkgver/) {print $3} }' src/.SRCINFO)"
-          pkgrel="$(awk '{ if ($1 ~ /pkgrel/) {print $3} }' src/.SRCINFO)"
-          arch="$(awk '{ if ($1 ~ /arch/) {print $3} }' src/.SRCINFO)"
+          pkgbase="$(awk '{ if ($1 ~ /pkgbase/) {print $3} }' freecad/.SRCINFO)"
+          pkgver="$(awk '{ if ($1 ~ /pkgver/) {print $3} }' freecad/.SRCINFO)"
+          pkgrel="$(awk '{ if ($1 ~ /pkgrel/) {print $3} }' freecad/.SRCINFO)"
+          arch="$(awk '{ if ($1 ~ /arch/) {print $3} }' freecad/.SRCINFO)"
           echo "::set-output name=pkgbase::$pkgbase"
           echo "::set-output name=pkgver::$pkgver"
           echo "::set-output name=pkgrel::$pkgrel"
           echo "::set-output name=arch::$arch"
-          echo "::set-output name=filename::$(basename $(ls ./freecad-linkstage3-git/*.pkg.tar* | tail -n1))"
+          echo "::set-output name=filename::$(basename $(ls freecad/freecad-linkstage3-git/*.pkg.tar* | tail -n1))"
           
         #id: version
         #run: |
@@ -85,7 +85,7 @@ jobs:
           GITHUB_TOKEN: ${{ github.token }}
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: ./src/${{ steps.version.outputs.filename }}
+          asset_path: ./freecad/${{ steps.version.outputs.filename }}
           asset_name: ${{ steps.version.outputs.filename }}
           asset_content_type: application/x-tar
 
