@@ -18,36 +18,52 @@ jobs:
         uses: actions/checkout@v2
 
       - name: Check out FreeCAD
-        uses: actions/checkout@v2
-        with:
-          repository: 'realthunder/FreeCAD'
-          path: 'src'
-          fetch-depth: 0
+        run: git clone --depth 0 https://aur.archlinux.org/freecad-linkstage3-git.git src
+        #uses: actions/checkout@v2
+        #with:
+        #  repository: 'realthunder/FreeCAD'
+        #  path: 'src'
+        #  fetch-depth: 0
 
       - name: Burn Baby Burn
         continue-on-error: true
-        run: docker run -v $PWD/src:/mnt/source -v $PWD/install:/mnt/install registry.gitlab.com/bonnee/freecad-build-env:latest
+        run: docker run -e EXPORT_PKG=1 -e EXPORT_SRC=1 -e SYNC_DATABASE=1 -v $PWD/src:/pkg whynothugo/makepkg
+
+      #  continue-on-error: true
+      #  run: docker run -v $PWD/src:/mnt/source -v $PWD/install:/mnt/install registry.gitlab.com/bonnee/freecad-build-env:latest
         
-      - name: Fix perms
-        run: sudo chown -R "$(id --user)":"$(id --group)" "install"
+      #- name: Fix perms
+      #  run: sudo chown -R "$(id --user)":"$(id --group)" "install"
         
-      - name: Create archive
-        run: |
-          cd install
-          tar -czf "../freecad-archive.tar.gz" *
-          cd ..
+      #- name: Create archive
+      #  run: |
+      #    cd install
+      #    tar -czf "../freecad-archive.tar.gz" *
+      #    cd ..
 
       - name: Retrieve version info
         id: version
         run: |
-          pkgver="$(git -C src describe --long --tags | sed 's/\([^-]*-g\)/r\1/;s/-/./g;s/_//')"
+          pkgbase="$(awk '{ if ($1 ~ /pkgbase/) {print $3} }' src/.SRCINFO)"
+          pkgver="$(awk '{ if ($1 ~ /pkgver/) {print $3} }' src/.SRCINFO)"
+          pkgrel="$(awk '{ if ($1 ~ /pkgrel/) {print $3} }' src/.SRCINFO)"
+          arch="$(awk '{ if ($1 ~ /arch/) {print $3} }' src/.SRCINFO)"
+          echo "::set-output name=pkgbase::$pkgbase"
           echo "::set-output name=pkgver::$pkgver"
+          echo "::set-output name=pkgrel::$pkgrel"
+          echo "::set-output name=arch::$arch"
+          echo "::set-output name=filename::$(basename $(ls ./freecad-linkstage3-git/*.pkg.tar* | tail -n1))"
+          
+        #id: version
+        #run: |
+        #  pkgver="$(git -C src describe --long --tags | sed 's/\([^-]*-g\)/r\1/;s/-/./g;s/_//')"
+        #  echo "::set-output name=pkgver::$pkgver"
 
-      - name: Create archive
-        run: |
-          cd install
-          tar -czf "../freecad-archive.tar.gz" *
-          cd ..
+      #- name: Create archive
+      #  run: |
+      #    cd install
+      #    tar -czf "../freecad-archive.tar.gz" *
+      #    cd ..
           
       - name: Create release
         uses: actions/create-release@v1
@@ -63,20 +79,20 @@ jobs:
             # FreeCAD LinkStage3
             version ${{ steps.version.outputs.pkgver }}
 
-      - name: Upload archive to release
+      - name: Upload package to release
         uses: actions/upload-release-asset@v1
         env:
           GITHUB_TOKEN: ${{ github.token }}
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: "./freecad-archive.tar.gz"
-          asset_name: "freecad-archive.tar.gz"
+          asset_path: ./src/${{ steps.version.outputs.filename }}
+          asset_name: ${{ steps.version.outputs.filename }}
           asset_content_type: application/x-tar
 
       - name: Generate PKGBUILD
         env:
           PKGVER: ${{ steps.version.outputs.pkgver }}
-          FILENAME: "freecad-archive.tar.gz"
+          FILENAME: ${{ steps.version.outputs.filename }}
         run: utils/gen_pkgbuild.awk utils/PKGBUILD.template > PKGBUILD
 
       - name: Publish freecad-linkstage3-bin to the AUR
