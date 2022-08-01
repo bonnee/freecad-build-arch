@@ -17,29 +17,9 @@ jobs:
       - name: Check out
         uses: actions/checkout@v2
 
-      #- name: Check out FreeCAD
-      #  run: git clone --depth 1 https://aur.archlinux.org/freecad-linkstage3-git.git src
-      #  #uses: actions/checkout@v2
-      #  #with:
-      #  #  repository: 'realthunder/FreeCAD'
-      #  #  path: 'src'
-      #  #  fetch-depth: 0
-
       - name: Burn Baby Burn
-        continue-on-error: true
+        #continue-on-error: true
         run: docker run -e EXPORT_PKG=1 -e EXPORT_SRC=1 -e SYNC_DATABASE=1 -v $PWD/freecad:/pkg whynothugo/makepkg
-
-      #  continue-on-error: true
-      #  run: docker run -v $PWD/src:/mnt/source -v $PWD/install:/mnt/install registry.gitlab.com/bonnee/freecad-build-env:latest
-        
-      #- name: Fix perms
-      #  run: sudo chown -R "$(id --user)":"$(id --group)" "install"
-        
-      #- name: Create archive
-      #  run: |
-      #    cd install
-      #    tar -czf "../freecad-archive.tar.gz" *
-      #    cd ..
 
       - name: Retrieve version info
         id: version
@@ -53,18 +33,7 @@ jobs:
           echo "::set-output name=pkgrel::$pkgrel"
           echo "::set-output name=arch::$arch"
           echo "::set-output name=filename::$(basename $(ls freecad/*.pkg.tar* | tail -n1))"
-          
-        #id: version
-        #run: |
-        #  pkgver="$(git -C src describe --long --tags | sed 's/\([^-]*-g\)/r\1/;s/-/./g;s/_//')"
-        #  echo "::set-output name=pkgver::$pkgver"
 
-      #- name: Create archive
-      #  run: |
-      #    cd install
-      #    tar -czf "../freecad-archive.tar.gz" *
-      #    cd ..
-          
       - name: Create release
         uses: actions/create-release@v1
         id: create_release
