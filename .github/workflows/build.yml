@@ -1,10 +1,10 @@
 name: 'Build FreeCAD'
 
-on:
-  workflow_run:
-    workflows: [trigger]
-    types:
-      - completed
+#on:
+#  workflow_run:
+#    workflows: [trigger]
+#    types:
+#      - completed
 
   workflow_dispatch:
 
