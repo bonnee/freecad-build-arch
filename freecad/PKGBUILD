@@ -9,8 +9,9 @@ url='http://www.freecadweb.org/'
 license=('LGPL')
 conflicts=('freecad')
 depends=(
-    'boost-libs' 'curl' 'shared-mime-info' 'hicolor-icon-theme' 'utf8cpp' 'jsoncpp' 'openmp' 'openmpi'
-    'opencascade>=7.2' 'xerces-c' 'libspnav' 'glew' 'netcdf' 'qt5-base' 'qt5-declarative' 'qt5-svg' 'qt5-tools' 'qt5-x11extras' 'qt5-xmlpatterns' 'qt5-webkit'
+    'boost-libs' 'curl' 'shared-mime-info' 'hicolor-icon-theme' 'utf8cpp' 'jsoncpp'
+    'opencascade>=7.2' 'xerces-c' 'libspnav' 'glew' 'netcdf' 'med' 'openmp' 'openmpi'
+    'qt5-base' 'qt5-declarative' 'qt5-svg' 'qt5-tools' 'qt5-x11extras' 'qt5-xmlpatterns' 'qt5-webkit'
     'python-pivy' 'python-matplotlib' 'pyside2-tools' 'shiboken2'
     'pyside2'
 )
