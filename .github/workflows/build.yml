@@ -19,7 +19,7 @@ jobs:
 
       - name: Burn Baby Burn
         #continue-on-error: true
-        run: docker run -e EXPORT_PKG=1 -e EXPORT_SRC=1 -e SYNC_DATABASE=1 -v $PWD/freecad:/pkg harmathy/makepkg
+        run: docker run -e EXPORT_PKG=1 -e EXPORT_SRC=1 -e SYNC_DATABASE=1 -v $PWD/freecad:/pkg countstarlight/makepkg
 
       - name: Retrieve version info
         id: version
