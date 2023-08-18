@@ -2,7 +2,7 @@
 # pkgver, source, and sha1sums are to be generated
 pkgname=freecad-linkstage3-bin
 pkgdesc='A general purpose 3D CAD modeler - Daily build of LinkDaily branch'
-pkgrel=2
+pkgrel=1
 arch=(x86_64)
 url='http://www.freecadweb.org/'
 license=('LGPL')
