@@ -3,7 +3,7 @@
 pkgname=freecad-linkstage3-git
 pkgver=2022.07.04.edge.r0.ga87320cc64
 pkgrel=1
-pkgdesc='A general purpose 3D CAD modeler - LinkStage3 dev branch, git checkout'
+pkgdesc='A general purpose 3D CAD modeler - LinkStable dev branch, git checkout'
 arch=('x86_64')
 url='http://www.freecadweb.org/'
 license=('LGPL')
@@ -29,7 +29,7 @@ optdepends=(
 )
 _gitname='FreeCAD'
 source=(
-    "git+https://github.com/realthunder/FreeCAD.git#branch=LinkMerge"
+    "git+https://github.com/realthunder/FreeCAD.git#branch=LinkStable"
     'patch_std_gnupp14.patch'
 )
 sha256sums=(
